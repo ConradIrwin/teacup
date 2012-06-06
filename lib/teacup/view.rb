@@ -182,6 +182,11 @@ module Teacup
       return self
     end
 
+    def fix_rubymotion
+      setAlpha(0.1)
+
+    end
+
   end
 
 end
