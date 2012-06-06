@@ -43,10 +43,11 @@ module Teacup
     def stylesheet=(new_stylesheet)
       @stylesheet = new_stylesheet
       subviews.each{ |subview| subview.stylesheet = new_stylesheet }
+      style(stylesheet.query(@stylename)) if @stylesheet && @stylename
     end
 
     def restyle!(orientation=nil)
-      style(stylesheet.query(@stylename)) if @stylesheet
+      style(stylesheet.query(@stylename)) if @stylesheet && @stylename
       subviews.each{ |subview| subview.restyle!(orientation) }
     end
 
