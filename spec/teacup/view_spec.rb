@@ -13,6 +13,8 @@ describe "Teacup::View" do
       def o.layer
         @layer ||= Object.new
       end
+
+      def o.setNeedsDisplay; end
     end
 
     @stylesheet = Teacup::Stylesheet.new do
@@ -83,7 +85,7 @@ describe "Teacup::View" do
     end
 
     it 'should warn about unknown thingies' do
-      $stderr.should_receive(:puts).and_return{ |foo|
+      $stdout.should_receive(:puts).and_return{ |foo|
         foo.should =~ /Teacup WARN:.*barbaric/
       }
       @mock.style(barbaric: "Beards")
