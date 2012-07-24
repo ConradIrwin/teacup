@@ -25,20 +25,19 @@ module Teacup
 
     # Alter the layout of a view
     #
-    # @param instance           The first parameter is the view that you want to
-    #                           layout.
+    # @param [UIView] view  The first parameter is the view that you want to layout.
     #
-    # @param name               The second parameter is optional, and is the
-    #                           stylename to apply to the element. When using
-    #                           stylesheets any properties defined in the
-    #                           current stylesheet (see {stylesheet}) for this
-    #                           element will be immediately applied.
+    # @param [Symbol] name_or_properties The second parameter is optional, and is the
+    #                                    stylename to apply to the element. When using
+    #                                    stylesheets any properties defined in the
+    #                                    current stylesheet (see {#stylesheet}) for this
+    #                                    element will be immediately applied.
     #
-    # @param properties         The third parameter is optional, and is a Hash
-    #                           of properties to apply to the view directly.
+    # @param [Hash] properties_or_nil  The third parameter is optional, and is a Hash
+    #                                  of properties to apply to the view directly.
     #
-    # @param &block             If a block is passed, it is evaluated such that
-    #                           any calls to {subview} that occur within that
+    # @yield [UIView]           If a block is passed, it is evaluated such that
+    #                           any calls to {#subview} that occur within that
     #                           block cause created subviews to be added to *this*
     #                           view instead of to the top-level view.
     #
@@ -52,7 +51,7 @@ module Teacup
     # @example
     #   layout(carousel, :default_carousel)
     #
-    # You can also use this method with {subview}, for example to add a new
+    # You can also use this method with {#subview}, for example to add a new
     # image to a carousel:
     #
     # @example
@@ -88,21 +87,21 @@ module Teacup
     # Add a new subview to the view heirarchy.
     #
     # By default the subview will be added at the top level of the view heirarchy, though
-    # if this function is executed within a block passed to {layout} or {subview}, then this
+    # if this function is executed within a block passed to {#layout} or {#subview}, then this
     # view will be added as a subview of the instance being layed out by the block.
     #
-    # This is particularly useful when coupled with the {UIViewController.heirarchy} function
+    # This is particularly useful when coupled with the `UIViewController.heirarchy` function
     # that allows you to declare your view heirarchy.
     #
-    # @param class_or_instance  The UIView subclass (or instance thereof) that you want
-    #                           to add. If you pass a class, an instance will be created
-    #                           by calling {new}.
+    # @param [Object] class_or_instance  The UIView subclass (or instance thereof) that you want
+    #                                    to add. If you pass a class, an instance will be created
+    #                                    by calling `class_or_instance.new`.
     #
-    # @param *args              Arguments to pass to {layout} to instruct teacup how to
-    #                           lay out the newly added subview.
+    # @param [Array<Object>] args       Arguments to pass to {#layout} to instruct teacup how to
+    #                                    lay out the newly added subview.
     #
-    # @param &block             A block to execute with the current view context set to
-    #                           your new element, see {layout} for more details.
+    # @yield [UIView]           A block to execute with the current view context set to
+    #                           your new element, see {#layout} for more details.
     #
     # @return instance          The instance that was added to the view heirarchy.
     #

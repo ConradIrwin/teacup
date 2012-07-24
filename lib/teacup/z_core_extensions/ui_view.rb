@@ -27,7 +27,7 @@ class UIView
   #
   # This will cause new styles to be applied from the stylesheet.
   #
-  # @param Symbol  stylename
+  # @param [Symbol] new_stylename
   def stylename=(new_stylename)
     @stylename = new_stylename
     restyle!
@@ -42,7 +42,7 @@ class UIView
   # stylesheet from its parents, override the 'stylesheet' method to
   # return the correct value at all times.
   #
-  # @param Teacup::Stylesheet  stylesheet.
+  # @param [Teacup::Stylesheet]  new_stylesheet
   def stylesheet=(new_stylesheet)
     @stylesheet = new_stylesheet
     restyle!
@@ -59,9 +59,9 @@ class UIView
   # This is equivalent to wrapping a call to .stylename= inside
   # UIView.beginAnimations.
   #
-  # @param Symbol  the new stylename
-  # @param Options  the options for the animation (may include the
-  #                 duration and the curve)
+  # @param [Symbol] stylename  the new stylename
+  # @param [Hash] options      the options for the animation (may include the
+  #                            duration and the curve)
   #
   def animate_to_stylename(stylename, options={})
     return if self.stylename == stylename
@@ -79,7 +79,7 @@ class UIView
   # This is equivalent to wrapping a call to .style() inside
   # UIView.beginAnimations.
   #
-  # @param Hash   the new styles and options for the animation
+  # @param [Hash] style   the new styles and options for the animation
   #
   def animate_to_style(style)
     UIView.beginAnimations(nil, context: nil)
@@ -101,7 +101,8 @@ class UIView
   # If you try and assign something in properties that is not supported,
   # a warning message will be emitted.
   #
-  # @param Hash  the properties to set.
+  # @param [Hash] properties  the properties to set.
+  # @param [Symbol] orientation (nil)
   def style(properties, orientation=nil)
     teacup_apply_hash self, properties
     properties.each do |key, value|

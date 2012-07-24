@@ -19,14 +19,35 @@ module Teacup
 
     # A hash of orientation => true/false.  true means the orientation is
     # supported.
+    #
+    # @return [Hash]
     def supports
       @supports ||= {}
     end
 
+    # Does this Style provide any information for the given orientation?
+    #
+    # @param [Symbol] orientation_key
+    # @return [Boolean]
     def supports? orientation_key
       supports.has_key? orientation_key
     end
 
+    # Flesh out a Style based on all rules in a stylesheet.
+    #
+    # This is responsible for merging the various source of information, via
+    # different orientations, extends: rules, imported stylesheets and generic
+    # styles for the type of the target.
+    #
+    # @param [UIView] target  (nil) The view to which we will apply these styles.
+    #                         The rules for target.class and its ancestors will
+    #                         be merged into the output.
+    #
+    # @param [Symbol] orientation  (nil) The current orientation, if known.
+    #                              The orientation specific subrules will be
+    #                              merged into the output.
+    # @param [Hash] seen  An internal cache to avoid cyclic includes. (private)
+    # @return [Hash]  The styles
     def build(target=nil, orientation=nil, seen={})
       properties = Style.new.update(self)
       properties.stylename = self.stylename

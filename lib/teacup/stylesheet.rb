@@ -68,14 +68,24 @@ module Teacup
     attr_reader :name
 
     class << self
+      # A cache of all stylesheets available in the application
+      # @return [Hash<Symbol, Stylesheet>]
       def stylesheets
         @stylesheets ||= {}
       end
 
+      # Get a stylesheet 
+      #
+      # @param [Symbol] name
+      # @return [Stylesheet]
       def [] name
         stylesheets[name]
       end
 
+      # Store a reference to a new stylesheet
+      #
+      # @param [Symbol] name
+      # @param [Stylesheet] stylesheet
       def []= name, stylesheet
         stylesheets[name] = stylesheet
       end
@@ -85,8 +95,8 @@ module Teacup
     #
     # If a name is provided then a new constant will be created using that name.
     #
-    # @param name, The (optional) name to give.
-    # @param &block, The body of the Stylesheet instance_eval'd.
+    # @param [Symbol] name (nil)  The name to give.
+    # @yield  The body of the Stylesheet will be instance_eval'd.
     #
     # @example
     #   Teacup::Stylesheet.new(:ipadvertical) do
@@ -115,8 +125,7 @@ module Teacup
     # within it will have lower precedence than those defined here
     # in the case that they share the same keys.
     #
-    # @param Symbol|Teacup::Stylesheet  the name of the stylesheet,
-    #                                   or the stylesheet to include.
+    # @param [Symbol,Teacup::Stylesheet] name_or_stylesheet
     #
     # When defining a stylesheet declaratively, it is better to use the symbol
     # that represents a stylesheet, as the constant may not be defined yet:
@@ -145,8 +154,11 @@ module Teacup
     # `import`.  If needs the orientation in order to merge and remove the
     # appropriate orientation styles.
     #
-    # @param Symbol stylename, the stylename to look up.
-    # @return Hash[Symbol, *] the resulting properties.
+    # @param [Symbol] stylename  the stylename to look up.
+    # @param [UIView] target (nil)  the object that will have the styles applied to it
+    # @param [Symbol] orientation (nil)  the orientation to query
+    #
+    # @return [Hash<Symbol, Object>] the resulting properties.
     # @example
     #   Teacup::Stylesheet[:ipadbase].query(:continue_button)
     #   # => {backgroundImage: UIImage.imageNamed("big_red_shiny_button"), title: "Continue!", top: 50}
@@ -169,8 +181,8 @@ module Teacup
 
     # Add a set of properties for a given stylename or multiple stylenames.
     #
-    # @param Symbol, *stylename
-    # @param Hash[Symbol, Object], properties
+    # @param [Symbol] queries
+    # @param [Hash<Symbol, Object>] properties
     #
     # @example
     #   Teacup::Stylesheet.new(:ipadbase) do
@@ -196,14 +208,14 @@ module Teacup
 
     # A unique and hopefully meaningful description of this Object.
     #
-    # @return String
+    # @return [String]
     def inspect
       "Teacup::Stylesheet[#{name.inspect}] = #{styles.inspect}"
     end
 
     # The array of Stylesheets that have been imported into this one.
     #
-    # @return Array[Stylesheet]
+    # @return [Array<Stylesheet>]
     def imported_stylesheets
       imported.map do |name_or_stylesheet|
         if name_or_stylesheet.is_a? Teacup::Stylesheet
@@ -220,14 +232,14 @@ module Teacup
 
     # The list of Stylesheets or names that have been imported into this one.
     #
-    # @return Array[Symbol|Stylesheet]
+    # @return [Array<Symbol,Stylesheet>]
     def imported
       @imported ||= []
     end
 
     # The actual contents of this stylesheet as a Hash from stylename to properties.
     #
-    # @return Hash[Symbol, Hash]
+    # @return [Hash<Symbol, Hash>]
     def styles
       @styles ||= Hash.new{ |_styles, stylename|
         @styles[stylename] = Style.new
